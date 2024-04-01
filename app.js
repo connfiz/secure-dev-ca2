@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
@@ -61,7 +60,3 @@ app.delete('/delete/:id', (req, res) => {
 app.listen(3000, () => {
     console.log('Server started on port 3000');
 });
-=======
-const express = require('express');
-const mysql = require('mysql');
->>>>>>> e70e91fb76b53183f8017b874761edab86b62478
