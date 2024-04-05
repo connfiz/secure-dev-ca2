@@ -39,11 +39,18 @@ app.get('/', (req, res) => {
 
 //add
 app.post('/add', (req, res) => {
-    let record = { name: req.body.name, email: req.body.email };
-    var name = req.body.name;
-    var email = req.body.email;
-    // Vulnerable to SQL Injection
-    let sql = "INSERT INTO users(name, email) VALUES ('" + name + "','" + email + "')";
+    //https://remarkablemark.medium.com/how-to-generate-a-sha-256-hash-with-javascript-d3b2696382fd
+    const { createHash } = require('crypto');
+
+    function hash(string) {
+        return createHash('sha256').update(string).digest('hex');
+    }
+    let hashname = hash(req.body.name);
+    let hashemail = hash(req.body.email);
+    console.log(hashname);
+    console.log(hashemail);
+    let record = { name: hashname, email: hashemail };
+    let sql = 'INSERT INTO users SET ?';
     db.query(sql, record, (err, result) => {
         if (err) throw err;
         res.redirect("/?message=" + "User added successfully");
@@ -58,6 +65,7 @@ app.post('/update/:id', (req, res) => {
         res.redirect('/');
     });
 });
+
 
 // Delete a record
 app.get('/delete/:id', (req, res) => {
